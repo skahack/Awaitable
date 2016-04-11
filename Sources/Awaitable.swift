@@ -19,17 +19,14 @@ public func async<T>(queue: dispatch_queue_t = defaultQueue, block: () -> T) -> 
 public func async<T>(queue: dispatch_queue_t = defaultQueue, block: () -> [() -> T]) -> Await<[T]> {
   let group = dispatch_group_create()
   let lock = dispatch_semaphore_create(1)
-  var results: Dictionary<Int, T> = [:] {
-    didSet {
-      dispatch_semaphore_signal(lock);
-    }
-  }
+  var results: Dictionary<Int, T> = [:]
 
   for (k, v) in block().enumerate() {
     dispatch_group_async(group, queue) {
       let res = v()
       dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
       results[k] = res
+      dispatch_semaphore_signal(lock);
     }
   }
 
