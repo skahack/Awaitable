@@ -2,6 +2,10 @@
 
 async/await for Swift
 
+## Badge
+
+[![Build Status](https://travis-ci.org/SKAhack/Awaitable.svg?branch=master)](https://travis-ci.org/SKAhack/Awaitable)
+
 ```swift
 import Awaitable
 
