@@ -1,0 +1,22 @@
+matrix:
+  include:
+    - os: linux
+      services: docker
+      language: generic
+      sudo: required
+
+    - os: osx
+      osx_image: xcode7.3
+      language: generic
+      sudo: required
+      env:
+        SWIFT_VERSION: DEVELOPMENT-SNAPSHOT-2016-04-25-a
+        SWIFTENV: https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/02090c7ede5a637b76e6df1710e83cd0bbe7dcdf/swiftenv-install.sh
+
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker pull ibmcom/kitura-ubuntu:latest; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then eval "$(curl -sL $SWIFTENV)"; fi
+
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh .travis/linux.sh; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh .travis/run_osx.sh; fi
